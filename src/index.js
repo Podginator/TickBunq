@@ -10,16 +10,11 @@ const handler = async () => {
     const habits = await ticktickClient.getHabits();
     const rewardValue = calculateRewardFromHabits(habits)
     
-    console.log(rewardValue)
     if (rewardValue) { 
         const bunqClient = await BunqClient.createClient();
-        await bunqClient.transferMoneyToSavings(rewardValue, 'savings', 'Habit Money')
+        await bunqClient.transferMoneyToSavings(1, 'savings', 'Habit money')
     }
 };
-
-(async () => { 
-    handler()
-})()
 
 module.exports = { 
     handler

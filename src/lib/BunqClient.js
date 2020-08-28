@@ -86,8 +86,8 @@ class BunqClient {
 
   _getAccount(accounts, description) { 
     return _.flow(
-      _.map(account => account.MonetaryAccountSavings || account.MonetaryAccountBank || {}),
-      _.find(account => account.description === description)
+      _.flatMap(account => account.MonetaryAccountSavings || account.MonetaryAccountBank || {}),
+      _.find(account => account.description === description),
     )(accounts)
   }
 }
@@ -97,8 +97,8 @@ const _signDataForBunq = (jsonData) => {
 
   sign.write(JSON.stringify(jsonData));
   sign.end();
-
-  const key = Buffer.from(BUNQ_PRIVATE_KEY);
+  
+  const key = Buffer.from(BUNQ_PRIVATE_KEY.replace(/\\n/g, '\n'))
   return sign.sign(key, "base64");
 };
 
